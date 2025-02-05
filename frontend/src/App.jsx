@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import Appointments from './pages/Appointments';
 import BookAppointment from './pages/BookAppointment';
 import Navbar from './components/navbar';
+import Footer from './components/Footer';
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/book-appointment/:docId" element={<BookAppointment />} />
       </Routes>
+      <Footer/>
     </div>
   );
 }
