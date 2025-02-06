@@ -4,8 +4,10 @@ import { doctors } from '../assets/assets';
 
 export const AppContext = createContext();
 
+const currencySymbol = '$';
+
 const AppContextProvider = ({ children }) => {
-  const value = useMemo(() => ({ doctors }), []);
+  const value = useMemo(() => ({ doctors, currencySymbol }), []);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

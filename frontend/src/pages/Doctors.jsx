@@ -8,6 +8,7 @@ const Doctors = () => {
   const { doctors } = useContext(AppContext);
   const navigate = useNavigate();
   const [filteredDoctors, setFilteredDoctors] = useState([]);
+  const [showFilter, setShowFilter] = useState(false);
 
   const filterDoctors = () => { 
     if (speciality) {
@@ -25,7 +26,15 @@ const Doctors = () => {
     <div>
       <p className="text-gray-600">Browse through the doctors specialist.</p>
       <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
-        <div className="flex flex-col gap-4 text-sm text-gray-600">
+        <button
+          className={`py-1 px-3 border rounded text-sm transitoin-all sm:hidden ${
+            showFilter ? 'bg-primary text-white' : ''
+          }`}
+          onClick={() => setShowFilter((prev) => !prev)}
+        >
+          Filters
+        </button>
+        <div className={`flex-col gap-4 text-sm text-gray-600 ${showFilter ? 'flex' : 'hidden sm:flex'}`}>
           <button
             onClick={() =>
               speciality === 'General physician'
@@ -61,9 +70,7 @@ const Doctors = () => {
               }
             }}
             className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer text-left ${
-              speciality === 'Gynecologist'
-                ? 'bg-indigo-100 text-black'
-                : ''
+              speciality === 'Gynecologist' ? 'bg-indigo-100 text-black' : ''
             }`}
           >
             Gynecologist
@@ -82,9 +89,7 @@ const Doctors = () => {
               }
             }}
             className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer text-left ${
-              speciality === 'Dermatologist'
-                ? 'bg-indigo-100 text-black'
-                : ''
+              speciality === 'Dermatologist' ? 'bg-indigo-100 text-black' : ''
             }`}
           >
             Dermatologist
@@ -103,9 +108,7 @@ const Doctors = () => {
               }
             }}
             className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer text-left ${
-              speciality === 'Pediatricians'
-                ? 'bg-indigo-100 text-black'
-                : ''
+              speciality === 'Pediatricians' ? 'bg-indigo-100 text-black' : ''
             }`}
           >
             Pediatricians
@@ -124,9 +127,7 @@ const Doctors = () => {
               }
             }}
             className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer text-left ${
-              speciality === 'Neurologist'
-                ? 'bg-indigo-100 text-black'
-                : ''
+              speciality === 'Neurologist' ? 'bg-indigo-100 text-black' : ''
             }`}
           >
             Neurologist
