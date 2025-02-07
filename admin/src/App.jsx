@@ -1,7 +1,9 @@
+import Login from "./pages/Login";
+
 const App = () => {
   return (
     <div>
-      <div className="text-green-500">App</div>
+     <Login/>
     </div>
   );
 }
