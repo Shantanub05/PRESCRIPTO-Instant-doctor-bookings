@@ -1,26 +1,31 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 
 const Doctors = () => {
-
   const { speciality } = useParams();
-  const { doctors } = useContext(AppContext);
+  const { doctors, getDoctorList } = useContext(AppContext);
   const navigate = useNavigate();
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
 
-  const filterDoctors = () => { 
+  const filterDoctors = () => {
     if (speciality) {
-      setFilteredDoctors(doctors.filter((item) => item.speciality === speciality));
+      setFilteredDoctors(
+        doctors.filter((item) => item.speciality === speciality)
+      );
     } else {
       setFilteredDoctors(doctors);
     }
-  }
+  };
 
   useEffect(() => {
     filterDoctors();
-  },[doctors, speciality]);
+  }, [doctors, speciality]);
+
+  useEffect(() => {
+    getDoctorList(); // Fetch the doctor list when the component mounts
+  }, []);
 
   return (
     <div>
@@ -34,7 +39,11 @@ const Doctors = () => {
         >
           Filters
         </button>
-        <div className={`flex-col gap-4 text-sm text-gray-600 ${showFilter ? 'flex' : 'hidden sm:flex'}`}>
+        <div
+          className={`flex-col gap-4 text-sm text-gray-600 ${
+            showFilter ? 'flex' : 'hidden sm:flex'
+          }`}
+        >
           <button
             onClick={() =>
               speciality === 'General physician'
@@ -176,6 +185,6 @@ const Doctors = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Doctors
+export default Doctors;

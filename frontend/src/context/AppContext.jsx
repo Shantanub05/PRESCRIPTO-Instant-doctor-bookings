@@ -1,13 +1,68 @@
-import { createContext, useMemo } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { doctors } from '../assets/assets';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const AppContext = createContext();
 
-const currencySymbol = '$';
-
 const AppContextProvider = ({ children }) => {
-  const value = useMemo(() => ({ doctors, currencySymbol }), []);
+  const currencySymbol = '$';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [doctors, setDoctors] = useState([]);
+  const [token, setToken] = useState(
+    localStorage.getItem('token') ? localStorage.getItem('token') : ''
+  );
+  const [userData, setUserData] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      loadUserProfileData();
+    } else {
+      setUserData(false);
+    }
+  }, [token]);
+
+  const getDoctorList = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/doctor/list`);
+      if (data.success) {
+        console.log(data);
+        setDoctors(data.doctors);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  const loadUserProfileData = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + '/api/user/get-profile', {
+        headers: { token },
+      });
+      if (data.success) {
+        setUserData(data.userData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+  const value = {
+    doctors,
+    currencySymbol,
+    backendUrl,
+    getDoctorList,
+    token,
+    setToken,
+    userData,
+    setUserData,
+    loadUserProfileData,
+  };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
