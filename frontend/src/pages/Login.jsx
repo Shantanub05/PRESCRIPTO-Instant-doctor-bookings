@@ -1,14 +1,62 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../context/AppContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const { token, setToken, backendUrl } = useContext(AppContext);
   const [state, setState] = useState('Sign Up');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    try {
+      if (state === 'Sign Up') {
+        console.log('Attempting to sign up with:', { name, email, password });
+        const { data } = await axios.post(backendUrl + '/api/user/register', {
+          name,
+          password,
+          email,
+        });
+        console.log('Sign Up response:', data);
+        if (data.success) {
+          console.log('Token received on Sign Up:', data.token);
+          localStorage.setItem('token', data.token);
+          setToken(data.token);
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        console.log('Attempting to log in with:', { email, password });
+        const { data } = await axios.post(backendUrl + '/api/user/login', {
+          email,
+          password,
+        });
+        console.log('Login response:', data);
+        if (data.success) {
+          console.log('Token received on Login:', data.token);
+          localStorage.setItem('token', data.token);
+          setToken(data.token);
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      console.log('Error during authentication:', error);
+      toast.error(error.message);
+    }
   };
+
+  useEffect(() => {
+    console.log('Token state in useEffect:', token);
+    if (token) {
+      navigate('/');
+    }
+  }, [token]);
 
   return (
     <form className="min-h-[80vh] flex items-center" onSubmit={onSubmitHandler}>
@@ -53,7 +101,10 @@ const Login = () => {
             required
           />
         </div>
-        <button className="bg-primary rounded-md py-2 text-white w-full text-base">
+        <button
+          type="submit"
+          className="bg-primary rounded-md py-2 text-white w-full text-base"
+        >
           {state === 'Sign Up' ? 'Create Account' : 'Login'}
         </button>
         {state === 'Sign Up' ? (
