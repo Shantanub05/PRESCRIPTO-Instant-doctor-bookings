@@ -1,13 +1,23 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { assets } from '../assets/assets';
-import { useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import { AppContext } from '../context/AppContext.jsx';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { token, setToken, userData } = useContext(AppContext);
 
   //states for create account button
   const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(true);
+
+  useEffect(() => {
+    console.log('Navbar token state:', token);
+  }, [token]);
+
+  const logout = () => {
+    setToken('');
+    localStorage.removeItem('token');
+  };
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
@@ -36,11 +46,11 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
-        {token ? (
+        {token  && userData ? (
           <div className="flex items-center gap-2 cursor-pointer group relative">
             <img
               className="w-8 rounded-full object-contain"
-              src={assets.profile_pic}
+              src={userData.image}
               alt="profile-pic"
             />
             <img
@@ -63,7 +73,7 @@ const Navbar = () => {
                   My Appointments
                 </button>
                 <button
-                  onClick={() => setToken(false)}
+                  onClick={logout}
                   className="hover:text-black cursor-pointer"
                 >
                   Logout
@@ -122,4 +132,5 @@ const Navbar = () => {
     </div>
   );
 };
+
 export default Navbar;

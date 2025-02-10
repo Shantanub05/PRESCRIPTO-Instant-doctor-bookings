@@ -7,14 +7,17 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Appointments from './pages/Appointments';
 import BookAppointment from './pages/BookAppointment';
-import Navbar from './components/navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
   return (
     <div className="mx-4 sm:mx-[10%]">
-      <Navbar/>
+      <Navbar />
+      <ToastContainer/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
