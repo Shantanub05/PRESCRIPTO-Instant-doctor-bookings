@@ -54,8 +54,14 @@ const AllAppointment = () => {
             </p>
             {item.cancelled ? (
               <p className="text-red-400 text-xs font-medium">Cancelled</p>
+            ) : item.isCompleted ? (
+              <p className="text-green-400 text-xs font-medium">Completed</p>
             ) : (
-              <img onClick={()=>cancelAppointment(item._id)} src={assets.cancel_icon} className="w-10 cursor-pointer" />
+              <img
+                onClick={() => cancelAppointment(item._id)}
+                src={assets.cancel_icon}
+                className="w-10 cursor-pointer"
+              />
             )}
           </div>
         ))}
