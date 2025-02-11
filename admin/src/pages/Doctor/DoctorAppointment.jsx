@@ -49,18 +49,24 @@ const DoctorAppointment = () => {
             <p>
               {currency} {item.amount}
             </p>
-            <div className="flex">
-              <img
-                onClick={() => markCancel(item._id)}
-                className="w-10 cursor-pointer"
-                src={assets.cancel_icon}
-              />
-              <img
-                onClick={() => markComplete(item._id)}
-                className="w-10 cursor-pointer"
-                src={assets.tick_icon}
-              />
-            </div>
+            {item.cancelled ? (
+              <p className='text-red-400 text-xs font-medium'>Cancelled</p>
+            ) : item.isCompleted ? (
+              <p className='text-green-500 text-xs font-medium'>Completed</p>
+            ) : (
+              <div className="flex">
+                <img
+                  onClick={() => markCancel(item._id)}
+                  className="w-10 cursor-pointer"
+                  src={assets.cancel_icon}
+                />
+                <img
+                  onClick={() => markComplete(item._id)}
+                  className="w-10 cursor-pointer"
+                  src={assets.tick_icon}
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>
