@@ -121,6 +121,26 @@ const dashboardData = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 }
+
+const docProfile = async (req, res) => {
+  try {
+    const { docId } = req.body;
+    const profileData = await doctorModel.findById(docId).select('-password')
+    res.json({success:true,profileData})
+  } catch (error) {
+     res.json({ success: false, message: error.message });
+  }
+}
+
+const updateDocProfile = async (req, res) => {
+  try {
+    const { docId, fees, address, available } = req.body;
+    await doctorModel.findByIdAndUpdate(docId, { fees, address, available });
+    res.json({success:true,message:"Profile Updated!"})
+  } catch (error) {
+     res.json({ success: false, message: error.message });
+  }
+}
 export {
   changeAvailability,
   getDoctorList,
@@ -129,4 +149,6 @@ export {
   markCancel,
   markComplete,
   dashboardData,
+  updateDocProfile,
+  docProfile,
 };
